@@ -9,4 +9,8 @@ public class RegisterDTO {
     private String password;
 
     private String nickname;
+
+    private double height;
+
+    private double weight;
 }

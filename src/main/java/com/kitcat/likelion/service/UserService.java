@@ -23,7 +23,7 @@ public class UserService {
 
     @Transactional
     public void register(RegisterDTO dto) {
-        User user = new User(dto.getEmail(), dto.getNickname(), encoder.encode(dto.getPassword()), RoleType.USER);
+        User user = new User(dto.getEmail(), dto.getNickname(), encoder.encode(dto.getPassword()), RoleType.USER, dto.getHeight(), dto.getWeight());
         userRepository.save(user);
     }
 
