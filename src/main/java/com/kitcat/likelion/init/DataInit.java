@@ -1,7 +1,7 @@
 package com.kitcat.likelion.init;
 
 import com.kitcat.likelion.domain.User;
-import com.kitcat.likelion.domain.enumrate.RoleType;
+import com.kitcat.likelion.domain.enumration.RoleType;
 import com.kitcat.likelion.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
