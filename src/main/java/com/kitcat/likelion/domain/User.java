@@ -25,10 +25,23 @@ public class User {
     @Enumerated(STRING)
     private RoleType role;
 
+    private double height;
+
+    private double weight;
+
     public User(String email, String nickname, String password, RoleType role) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
+    }
+
+    public User(String email, String nickname, String password, RoleType role, double height, double weight) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.role = role;
+        this.height = height;
+        this.weight = weight;
     }
 }
