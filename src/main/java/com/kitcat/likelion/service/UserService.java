@@ -1,7 +1,7 @@
 package com.kitcat.likelion.service;
 
 import com.kitcat.likelion.domain.User;
-import com.kitcat.likelion.domain.enumrate.RoleType;
+import com.kitcat.likelion.domain.enumration.RoleType;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.LoginDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
