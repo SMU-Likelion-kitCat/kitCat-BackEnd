@@ -1,6 +1,7 @@
 package com.kitcat.likelion.controller;
 
 import com.kitcat.likelion.requestDTO.LoginDTO;
+import com.kitcat.likelion.requestDTO.PetsDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.service.UserService;
@@ -53,6 +54,7 @@ public class UserController {
             @Parameter(name = "password", description = "비밀번호", example = "1234"),
     })
     public ResponseEntity<String> login(@RequestBody LoginDTO dto) {
+        System.out.println("dto = " + dto);
         String status = userService.login(dto);
 
         if(status.equals("user not found") || status.equals("password error")) {
@@ -100,5 +102,12 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     public Long test(@AuthenticationPrincipal CustomUserDetails userDetails) {
         return userDetails.getUserId();
+    }
+
+    @PostMapping("/test")
+    public String test(@RequestBody PetsDTO dto) {
+        System.out.println("dto = " + dto);
+        //petService.savePets(dto.getPetsDTOS(), userDetails.getUserId());
+        return "success";
     }
 }
