@@ -4,11 +4,14 @@ import com.kitcat.likelion.domain.enumration.GrowthStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 
 @Getter
 @Entity
+@ToString(exclude = {"user"})
 @NoArgsConstructor
 public class Pet {
     @Id
@@ -20,7 +23,7 @@ public class Pet {
 
     private double weight;
 
-    @Enumerated
+    @Enumerated(STRING)
     private GrowthStatus growthStatus;
 
     @ManyToOne(fetch = LAZY)

@@ -13,7 +13,7 @@ public enum GrowthStatus {
 
     private String growthStatus;
 
-    private GrowthStatus(String growthStatus) {
+    GrowthStatus(String growthStatus) {
         this.growthStatus = growthStatus;
     }
 

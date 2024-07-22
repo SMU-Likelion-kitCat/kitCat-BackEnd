@@ -23,14 +23,14 @@ public class PetService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void savePets(PetListDTO dto, Long userId) {
+    public void savePets(List<PetsDTO> dto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found id : " + userId));
 
-        for (PetsDTO petsDTO : dto.getPetsDTOS()) {
+        for (PetsDTO petsDTO : dto) {
             Pet pet = new Pet(petsDTO.getName(), petsDTO.getWeight(), GrowthStatus.valueOf(petsDTO.getGrowthStatus()));
             pet.setUser(user);
-
+            System.out.println("pet = " + pet);
             petRepository.save(pet);
         }
     }

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,11 +33,12 @@ public class PetController {
     @Parameters({
             @Parameter(name = "name", description = "반려견 이름", example = "초코"),
             @Parameter(name = "weight", description = "반려견 체중", example = "5.2"),
-            @Parameter(name = "growStatus", description = "반려견 상태", example = "성장기(4~12개월)")
+            @Parameter(name = "growthStatus", description = "반려견 상태", example = "성장기(4~12개월)")
     })
     @PreAuthorize("isAuthenticated()")
-    public void save(@RequestBody PetListDTO dto,
-                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public String save(@RequestBody List<PetsDTO> dto,
+                       @AuthenticationPrincipal CustomUserDetails userDetails) {
         petService.savePets(dto, userDetails.getUserId());
+        return "success";
     }
 }
