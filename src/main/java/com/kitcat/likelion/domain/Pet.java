@@ -25,4 +25,18 @@ public class Pet {
 
     @ManyToOne(fetch = LAZY)
     private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+
+        if(!user.getPets().contains(this)) {
+            user.addPet(this);
+        }
+    }
+
+    public Pet(String name, double weight, GrowthStatus growthStatus) {
+        this.name = name;
+        this.weight = weight;
+        this.growthStatus = growthStatus;
+    }
 }

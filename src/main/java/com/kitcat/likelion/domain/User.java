@@ -44,4 +44,8 @@ public class User {
         this.height = height;
         this.weight = weight;
     }
+
+    public void addPet(Pet pet) {
+        pets.add(pet);
+    }
 }
