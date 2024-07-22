@@ -39,7 +39,7 @@ public class UserController {
     })
     public String register(@RequestBody RegisterDTO dto) {
         userService.register(dto);
-        return "success";
+        return userService.login(new LoginDTO(dto.getEmail(), dto.getPassword()));
     }
 
     @PostMapping("/login")
@@ -53,13 +53,13 @@ public class UserController {
             @Parameter(name = "password", description = "비밀번호", example = "1234"),
     })
     public ResponseEntity<String> login(@RequestBody LoginDTO dto) {
-        String token = userService.login(dto);
+        String status = userService.login(dto);
 
-        if(token.equals("user not found") || token.equals("password error")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(token);
+        if(status.equals("user not found") || status.equals("password error")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(status);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        return ResponseEntity.status(HttpStatus.OK).body(status);
     }
 
     @GetMapping("/check/nickname/{nickname}")
