@@ -5,6 +5,7 @@ import com.kitcat.likelion.domain.enumration.RoleType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,9 @@ public class User {
     private double weight;
 
     @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
     private List<Pet> pets = new ArrayList<>();
 
     public User(String email, String nickname, String password, RoleType role, double height, double weight) {
@@ -47,5 +51,9 @@ public class User {
 
     public void addPet(Pet pet) {
         pets.add(pet);
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 }
