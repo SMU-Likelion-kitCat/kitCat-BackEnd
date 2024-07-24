@@ -3,6 +3,7 @@ package com.kitcat.likelion.domain;
 import com.kitcat.likelion.domain.enumration.RoutineTerm;
 import com.kitcat.likelion.domain.enumration.RoutineType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -45,5 +46,14 @@ public class Routine extends BaseTime {
         if(!user.getRoutines().contains(this)) {
             user.addRoutine(this);
         }
+    }
+
+    @Builder
+    public Routine(String target, String name, String colorCode, RoutineType routineType, RoutineTerm routineTerm) {
+        this.target = target;
+        this.name = name;
+        this.colorCode = colorCode;
+        this.routineType = routineType;
+        this.routineTerm = routineTerm;
     }
 }
