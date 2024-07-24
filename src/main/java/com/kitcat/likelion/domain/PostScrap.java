@@ -22,4 +22,19 @@ public class PostScrap {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void setUser(User user) {
+        this.user = user;
+
+        if (!user.getScraps().contains(this)) {
+            user.addScrap(this);
+        }
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+        if (!post.getScraps().contains(this)) {
+            post.addScrap(this);
+        }
+    }
+
 }

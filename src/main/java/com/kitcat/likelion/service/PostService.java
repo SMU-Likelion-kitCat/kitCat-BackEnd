@@ -67,7 +67,7 @@ public class PostService {
             post.increaseCommentCount(post.getCommentCount()+1);
         }
     }
-
+    @Transactional
     public PostDetailDTO findDetailPost(Long userId, Long postId){
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Could not find post with id: " + postId));
@@ -88,6 +88,43 @@ public class PostService {
                 .scrapState(postScrap.isPresent())
                 .heartState(heart.isPresent())
                 .build();
+
+    }
+
+    @Transactional
+    public void insertHeart(Long userId, Long postId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
+
+        if(heartRepository.findByUserAndPost(user, post).isPresent()){
+            throw new RuntimeException("failed to add heart to post");
+        }
+
+        Heart heart = new Heart();
+        heart.setPost(post);
+        heart.setUser(user);
+
+        heartRepository.save(heart);
+        postRepository.increaseHeart(postId);
+    }
+
+    @Transactional
+    public void deleteHeart(Long userId, Long postId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
+
+        Heart heart = heartRepository.findByUserAndPost(user, post)
+                .orElseThrow(() -> new NotFoundException("Could not find heart with id: " + postId));
+
+        user.getHearts().remove(heart);
+        postRepository.decreaseHeart(postId);
+        heartRepository.delete(heart);
 
     }
 

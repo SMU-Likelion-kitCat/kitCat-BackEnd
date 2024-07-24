@@ -22,4 +22,21 @@ public class Heart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void setUser(User user) {
+        this.user = user;
+
+        if (!user.getHearts().contains(this)){
+            user.addHeart(this);
+        }
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+
+        if (!post.getHearts().contains(this)){
+            post.addHeart(this);
+        }
+    }
+
+
 }

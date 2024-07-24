@@ -24,7 +24,7 @@ public class PostController {
 
     @PostMapping("/create")
     public String createPost(@RequestPart(value = "dto")PostCreateRequestDTO requestDTO,
-                             @AuthenticationPrincipal CustomUserDetails userDetails) {
+                                @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         postService.createPost(userDetails.getUserId(), requestDTO);
         return "good";
@@ -32,7 +32,7 @@ public class PostController {
 
     @PostMapping("/comment")
     public String comment(@RequestBody PostCommentRequestDTO requestDTO,
-                          @AuthenticationPrincipal CustomUserDetails userDetails){
+                                @AuthenticationPrincipal CustomUserDetails userDetails){
 
         postService.createComment(userDetails.getUserId(), requestDTO);
 //        postService.createComment(1L, requestDTO);
@@ -40,11 +40,30 @@ public class PostController {
     }
 
     @GetMapping("/show")
-    public PostDetailDTO show(@RequestBody Long postId,
-                              @AuthenticationPrincipal CustomUserDetails userDetails){
+    public PostDetailDTO show(@RequestParam("id") Long postId,
+                                 @AuthenticationPrincipal CustomUserDetails userDetails){
         Long userId = userDetails.getUserId();
         return postService.findDetailPost(userId, postId);
     }
+
+    @GetMapping("/heart/insert")
+    public String insertHeart(@RequestParam Long postId,
+                                @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long userId = userDetails.getUserId();
+        postService.insertHeart(userId, postId);
+        return "good";
+    }
+
+    @GetMapping("/heart/delect")
+    public String deleteHeart(@RequestParam Long postId,
+                                @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long userId = userDetails.getUserId();
+        postService.deleteHeart(userId, postId);
+        return "good";
+    }
+
 
 
 
