@@ -128,5 +128,40 @@ public class PostService {
 
     }
 
+    @Transactional
+    public void insertScrap(Long userId, Long postId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
+
+        if(postScrapRepository.findByUserAndPost(user, post).isPresent()){
+            throw new RuntimeException("failed to add scrap to post");
+        }
+
+        PostScrap postScrap = new PostScrap();
+        postScrap.setPost(post);
+        postScrap.setUser(user);
+        postScrapRepository.save(postScrap);
+
+    }
+
+    @Transactional
+    public void deleteScrap(Long userId, Long postId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
+
+        PostScrap postScrap = postScrapRepository.findByUserAndPost(user, post)
+                .orElseThrow(() -> new NotFoundException("Could not find post scrap with id: " + postId));
+
+        user.getScraps().remove(postScrap);
+        postScrapRepository.delete(postScrap);
+
+    }
+
 
 }
