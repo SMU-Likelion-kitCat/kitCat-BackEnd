@@ -68,4 +68,12 @@ public class Post extends BaseTimeEntity {
         commentCount = increment;
     }
 
+    public void addHeart(Heart heart) {
+        this.hearts.add(heart);
+    }
+
+    public void addScrap(PostScrap scrap) {
+        this.scraps.add(scrap);
+    }
+
 }
