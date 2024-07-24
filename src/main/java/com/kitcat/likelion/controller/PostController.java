@@ -55,7 +55,7 @@ public class PostController {
         return "good";
     }
 
-    @GetMapping("/heart/delect")
+    @GetMapping("/heart/delecte")
     public String deleteHeart(@RequestParam Long postId,
                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
