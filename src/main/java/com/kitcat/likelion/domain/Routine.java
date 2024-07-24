@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.FetchType.*;
 
 @Getter
 @Entity
@@ -25,9 +26,24 @@ public class Routine extends BaseTime {
 
     private String colorCode;
 
+    /**
+     * ToDo: 루틴 빈도 만들기
+     */
+
     @Enumerated(STRING)
     private RoutineType routineType;
 
     @Enumerated(STRING)
     private RoutineTerm routineTerm;
+
+    @ManyToOne(fetch = LAZY)
+    private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+
+        if(!user.getRoutines().contains(this)) {
+            user.addRoutine(this);
+        }
+    }
 }
