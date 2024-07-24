@@ -2,6 +2,7 @@ package com.kitcat.likelion.controller;
 
 import com.kitcat.likelion.requestDTO.PetListDTO;
 import com.kitcat.likelion.requestDTO.PetsDTO;
+import com.kitcat.likelion.responseDTO.PetInfoDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class PetController {
     private final PetService petService;
 
     @PostMapping("/save")
-    @Operation(summary = "반려견 정보", description = "반려견 정보 저장하는 API")
+    @Operation(summary = "반려견 저장", description = "반려견 정보 저장하는 API")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
     @PreAuthorize("isAuthenticated()")
     public String save(@RequestPart("dto") List<PetsDTO> dto,
@@ -38,5 +39,14 @@ public class PetController {
                        @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         petService.savePets(dto, files, userDetails.getUserId());
         return "success";
+    }
+
+    @PostMapping("/info")
+    @Operation(summary = "반려견 정보", description = "견주의 반려견 정보를 전송하는 API")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
+    @PreAuthorize("isAuthenticated()")
+    public List<PetInfoDTO> info(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return petService.getPets(userDetails.getUserId());
     }
 }

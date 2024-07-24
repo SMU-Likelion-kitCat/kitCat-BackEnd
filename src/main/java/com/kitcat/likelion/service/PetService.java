@@ -10,6 +10,7 @@ import com.kitcat.likelion.repository.PetRepository;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.PetListDTO;
 import com.kitcat.likelion.requestDTO.PetsDTO;
+import com.kitcat.likelion.responseDTO.PetInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,14 @@ public class PetService {
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
 
-            amazonS3.putObject(bucket, image, file.getInputStream(), metadata);
+            //amazonS3.putObject(bucket, image, file.getInputStream(), metadata);
             petRepository.save(pet);
         }
+    }
+
+    public List<PetInfoDTO> getPets(Long userId) {
+        List<Pet> pets = petRepository.findPetsByUserId(userId);
+
+        return pets.stream().map(pet -> new PetInfoDTO(pet.getId(), pet.getName(), pet.getImage())).toList();
     }
 }
