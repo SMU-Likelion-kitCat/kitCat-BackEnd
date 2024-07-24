@@ -21,7 +21,7 @@ public class RoutineCreateDTO {
             "    TIME(\"시간 목표를 달성하는 방식\"),\n" +
             "    CALORIE(\"칼로리 목표를 달성하는 방식\"),\n" +
             "    DISTANCE(\"산책 거리 목표를 달성하는 방식\")", example = "TIME")
-    private RoutineType routineType;
+    private String routineType;
 
     @Schema(description = "루틴 기간 \n" +
             "    ONE_WEEKS(\"1주\"),\n" +
@@ -30,5 +30,5 @@ public class RoutineCreateDTO {
             "    TEN_DAYS(\"10일\"),\n" +
             "    ONE_MONTHS(\"한 달\"),\n" +
             "    TWO_MONTHS(\"두 달\")", example = "TWO_WEEKS")
-    private RoutineTerm routineTerm;
+    private String routineTerm;
 }
