@@ -21,6 +21,8 @@ public class Pet {
 
     private String name;
 
+    private String image;
+
     private double weight;
 
     @Enumerated(STRING)
@@ -37,8 +39,9 @@ public class Pet {
         }
     }
 
-    public Pet(String name, double weight, GrowthStatus growthStatus) {
+    public Pet(String name, String image, double weight, GrowthStatus growthStatus) {
         this.name = name;
+        this.image = image;
         this.weight = weight;
         this.growthStatus = growthStatus;
     }
