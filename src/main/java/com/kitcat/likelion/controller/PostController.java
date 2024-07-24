@@ -1,7 +1,9 @@
 package com.kitcat.likelion.controller;
 
 import com.kitcat.likelion.domain.Post;
+import com.kitcat.likelion.requestDTO.PostCommentRequestDTO;
 import com.kitcat.likelion.requestDTO.PostCreateRequestDTO;
+import com.kitcat.likelion.responseDTO.PostDetailDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.security.jwt.JwtUtil;
 import com.kitcat.likelion.service.PostService;
@@ -25,8 +27,25 @@ public class PostController {
                              @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         postService.createPost(userDetails.getUserId(), requestDTO);
-
         return "good";
     }
+
+    @PostMapping("/comment")
+    public String comment(@RequestBody PostCommentRequestDTO requestDTO,
+                          @AuthenticationPrincipal CustomUserDetails userDetails){
+
+        postService.createComment(userDetails.getUserId(), requestDTO);
+//        postService.createComment(1L, requestDTO);
+        return "good";
+    }
+
+    @GetMapping("/show")
+    public PostDetailDTO show(@RequestBody Long postId,
+                              @AuthenticationPrincipal CustomUserDetails userDetails){
+        Long userId = userDetails.getUserId();
+        return postService.findDetailPost(userId, postId);
+    }
+
+
 
 }

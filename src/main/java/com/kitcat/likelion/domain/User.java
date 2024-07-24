@@ -44,6 +44,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Routine> routines = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
+
     public User(String email, String nickname, String password, RoleType role, double height, double weight) {
         this.email = email;
         this.nickname = nickname;
