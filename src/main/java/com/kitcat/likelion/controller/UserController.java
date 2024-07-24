@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,7 +44,11 @@ public class UserController {
     })
     public String register(@RequestBody RegisterDTO dto) {
         userService.register(dto);
-        return userService.login(new LoginDTO(dto.getEmail(), dto.getPassword()));
+
+        String token = userService.login(new LoginDTO(dto.getEmail(), dto.getPassword()));
+        insertToken(token);
+
+        return token;
     }
 
     @PostMapping("/login")
@@ -48,10 +56,6 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "401", description = "로그인 실패", content = @Content(mediaType = "application/json"))
-    })
-    @Parameters({
-            @Parameter(name = "email", description = "아이디(이메일)", example = "test@naver.com"),
-            @Parameter(name = "password", description = "비밀번호", example = "1234"),
     })
     public ResponseEntity<String> login(@RequestBody LoginDTO dto) {
         System.out.println("dto = " + dto);
@@ -61,7 +65,20 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(status);
         }
 
+        insertToken(status);
         return ResponseEntity.status(HttpStatus.OK).body(status);
+    }
+
+    public void insertToken(String token) {
+        Cookie cookie = new Cookie("accessToken", token);
+
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setMaxAge(60 * 60 * 24 * 30); // 30 일
+        cookie.setHttpOnly(true);
+
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        response.addCookie(cookie);
     }
 
     @GetMapping("/check/nickname/{nickname}")
