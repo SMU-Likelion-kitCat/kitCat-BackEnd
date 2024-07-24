@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +32,11 @@ public class PetController {
     @PostMapping("/save")
     @Operation(summary = "반려견 정보", description = "반려견 정보 저장하는 API")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
-    @Parameters({
-            @Parameter(name = "name", description = "반려견 이름", example = "초코"),
-            @Parameter(name = "weight", description = "반려견 체중", example = "5.2"),
-            @Parameter(name = "growthStatus", description = "반려견 상태", example = "성장기(4~12개월)")
-    })
     @PreAuthorize("isAuthenticated()")
-    public String save(@RequestBody List<PetsDTO> dto,
-                       @AuthenticationPrincipal CustomUserDetails userDetails) {
-        petService.savePets(dto, userDetails.getUserId());
+    public String save(@RequestPart("dto") List<PetsDTO> dto,
+                       @RequestPart("files") List<MultipartFile> files,
+                       @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+        petService.savePets(dto, files, userDetails.getUserId());
         return "success";
     }
 }
