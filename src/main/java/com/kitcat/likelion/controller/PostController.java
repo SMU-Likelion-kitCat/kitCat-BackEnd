@@ -10,8 +10,10 @@ import com.kitcat.likelion.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/post")
@@ -24,9 +26,10 @@ public class PostController {
 
     @PostMapping("/create")
     public String createPost(@RequestPart(value = "dto")PostCreateRequestDTO requestDTO,
+                                @RequestPart(value = "files", required = false) List<MultipartFile> files,
                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        postService.createPost(userDetails.getUserId(), requestDTO);
+        postService.createPost(userDetails.getUserId(), requestDTO, files);
         return "good";
     }
 
@@ -40,18 +43,16 @@ public class PostController {
     }
 
     @GetMapping("/show")
-    public PostDetailDTO show(@RequestParam("id") Long postId,
+    public PostDetailDTO show(@RequestParam Long postId,
                                  @AuthenticationPrincipal CustomUserDetails userDetails){
-        Long userId = userDetails.getUserId();
-        return postService.findDetailPost(userId, postId);
+        return postService.findDetailPost(userDetails.getUserId(), postId);
     }
 
     @GetMapping("/heart/insert")
     public String insertHeart(@RequestParam Long postId,
                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        Long userId = userDetails.getUserId();
-        postService.insertHeart(userId, postId);
+        postService.insertHeart(userDetails.getUserId(), postId);
         return "good";
     }
 
@@ -59,8 +60,7 @@ public class PostController {
     public String deleteHeart(@RequestParam Long postId,
                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        Long userId = userDetails.getUserId();
-        postService.deleteHeart(userId, postId);
+        postService.deleteHeart(userDetails.getUserId(), postId);
         return "good";
     }
 

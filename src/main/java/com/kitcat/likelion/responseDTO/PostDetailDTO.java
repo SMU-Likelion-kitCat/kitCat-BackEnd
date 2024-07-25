@@ -1,11 +1,9 @@
 package com.kitcat.likelion.responseDTO;
 
-import com.kitcat.likelion.requestDTO.PostCommentRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,20 +21,17 @@ public class PostDetailDTO {
 
     private boolean heartState;
 
-    private boolean scrapState;
-
     private LocalDateTime createTime;
 
-    private List<PostCommentResponesDTO> comments;
+    private List<PostCommentResponseDTO> comments;
 
     @Builder
-    public PostDetailDTO(String title, String content, String writer, int commentCount, boolean heartState, boolean scrapState, LocalDateTime createTime, int likeCount, List<PostCommentResponesDTO> comments) {
+    public PostDetailDTO(String title, String content, String writer, int commentCount, boolean heartState, LocalDateTime createTime, int likeCount, List<PostCommentResponseDTO> comments) {
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.commentCount = commentCount;
         this.heartState = heartState;
-        this.scrapState = scrapState;
         this.createTime = createTime;
         this.likeCount = likeCount;
         this.comments = comments;

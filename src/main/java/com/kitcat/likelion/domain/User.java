@@ -50,9 +50,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Heart> hearts  = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<PostScrap> scraps = new ArrayList<>();
-
     public User(String email, String nickname, String password, RoleType role, double height, double weight) {
         this.email = email;
         this.nickname = nickname;
@@ -78,8 +75,8 @@ public class User {
         this.hearts.add(heart);
     }
 
-    public void addScrap(PostScrap postScrap) {
-        this.scraps.add(postScrap);
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 
 
