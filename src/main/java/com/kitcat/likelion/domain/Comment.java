@@ -43,17 +43,23 @@ public class Comment extends BaseTimeEntity {
         this.isDeleted = isDeleted;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public void setUser(User user) {
         this.user = user;
+
         if(!user.getComments().contains(this)) {
-            user.getComments().add(this);
+            user.addComment(this);
         }
     }
 
     public void setPost(Post post) {
         this.post = post;
+
         if(!post.getComments().contains(this)) {
-            post.getComments().add(this);
+            post.addComment(this);
         }
     }
 
@@ -63,6 +69,10 @@ public class Comment extends BaseTimeEntity {
         if(!comment.children.contains(this)) {
             comment.children.add(this);
         }
+    }
+
+    public void addComment(Comment comment) {
+        this.children.add(comment);
     }
 
 }

@@ -25,8 +25,6 @@ public class Post extends BaseTimeEntity {
 
     private String content;
 
-//    private String potoName;
-
     private int commentCount;
 
     private int like_count;
@@ -40,9 +38,6 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = {PERSIST,REMOVE}, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = {PERSIST,REMOVE}, orphanRemoval = true)
-    private List<PostScrap> scraps = new ArrayList<>();
 
     @Builder
     public Post(String title, String content, int commentCount, int like_count, User user) {
@@ -64,16 +59,12 @@ public class Post extends BaseTimeEntity {
         comments.add(comment);
     }
 
-    public void increaseCommentCount(int increment) {
-        commentCount = increment;
-    }
-
     public void addHeart(Heart heart) {
         this.hearts.add(heart);
     }
 
-    public void addScrap(PostScrap scrap) {
-        this.scraps.add(scrap);
+    public void increaseCommentCount() {
+        this.commentCount++;
     }
 
 }
