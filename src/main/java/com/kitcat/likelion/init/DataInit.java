@@ -23,13 +23,13 @@ public class DataInit {
         User user1 = new User("test@naver.com","user1", encoder.encode("1234"), RoleType.USER, 178.7, 76.2);
         User user = new User("test0@naver.com","user0", encoder.encode("1234"), RoleType.USER, 178.7, 76.2);
 
-        Post post1 = new Post("test11", "test_content11", 1, 1, user1);
-        Post post = new Post("test", "test_content", 0, 0, user);
+//        Post post1 = new Post("test11", "test_content11", 1, 1, user1);
+//        Post post = new Post("test", "test_content", 0, 0, user);
 
         userRepository.save(user1);
         userRepository.save(user);
-
-        postRepository.save(post1);
-        postRepository.save(post);
+//
+//        postRepository.save(post1);
+//        postRepository.save(post);
     }
 }
