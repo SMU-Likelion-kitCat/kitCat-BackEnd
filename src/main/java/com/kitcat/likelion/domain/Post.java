@@ -1,9 +1,7 @@
 package com.kitcat.likelion.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +12,7 @@ import static jakarta.persistence.CascadeType.REMOVE;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString(exclude = {"photos"})
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -29,6 +28,9 @@ public class Post extends BaseTimeEntity {
 
     private int like_count;
 
+    @Setter
+    private String photoName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -38,6 +40,9 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = {PERSIST,REMOVE}, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = {PERSIST,REMOVE}, orphanRemoval = true)
+    private List<Photo> photos = new ArrayList<>();
 
     @Builder
     public Post(String title, String content, int commentCount, int like_count, User user) {
@@ -65,6 +70,10 @@ public class Post extends BaseTimeEntity {
 
     public void increaseCommentCount() {
         this.commentCount++;
+    }
+
+    public void addPhoto(Photo photo) {
+        this.photos.add(photo);
     }
 
 }
