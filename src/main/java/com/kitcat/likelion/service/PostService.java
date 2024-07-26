@@ -9,6 +9,7 @@ import com.kitcat.likelion.requestDTO.PostCommentRequestDTO;
 import com.kitcat.likelion.requestDTO.PostCreateRequestDTO;
 import com.kitcat.likelion.responseDTO.PostCommentResponseDTO;
 import com.kitcat.likelion.responseDTO.PostDetailDTO;
+import com.kitcat.likelion.responseDTO.PostListDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -186,6 +187,14 @@ public class PostService {
         user.getHearts().remove(heart);
         postRepository.decreaseHeart(postId);
         heartRepository.delete(heart);
+
+    }
+
+    @Transactional
+    public List<PostListDTO> postList(){
+        List<PostListDTO> posts = postRepository.findAllPostListDTO();
+
+        return posts;
 
     }
 
