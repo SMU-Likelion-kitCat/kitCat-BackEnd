@@ -10,4 +10,13 @@ public enum RoutineType {
     RoutineType(String routineType) {
         this.routineType = routineType;
     }
+
+    public static RoutineType fromString(String text) {
+        for (RoutineType rt : RoutineType.values()) {
+            if (rt.routineType.equals(text)) {
+                return rt;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with text " + text);
+    }
 }
