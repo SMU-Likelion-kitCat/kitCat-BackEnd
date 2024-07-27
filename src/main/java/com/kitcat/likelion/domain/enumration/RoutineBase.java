@@ -1,5 +1,8 @@
 package com.kitcat.likelion.domain.enumration;
 
+import lombok.Getter;
+
+@Getter
 public enum RoutineBase {
     DAY("하루"),
     WEEK("일주일");

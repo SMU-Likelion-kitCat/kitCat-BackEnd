@@ -57,9 +57,9 @@ public class RoutineService {
                     .count(routine.getCount())
                     .target(routine.getTarget())
                     .colorCode(routine.getColorCode())
-                    .routineBase(routine.getRoutineBase())
-                    .routineTerm(routine.getRoutineTerm())
-                    .routineType(routine.getRoutineType())
+                    .routineBase(routine.getRoutineBase().getRoutineBase())
+                    .routineTerm(routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0')
+                    .routineType(routine.getRoutineType().getRoutineType())
                     .build();
 
             dtos.add(dto);
