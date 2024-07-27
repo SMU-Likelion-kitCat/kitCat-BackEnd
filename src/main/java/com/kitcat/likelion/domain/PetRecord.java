@@ -22,4 +22,21 @@ public class PetRecord extends BaseTime {
 
     @ManyToOne(fetch = LAZY)
     private UserRecord userRecord;
+
+    public PetRecord(int calorie, Pet pet) {
+        this.calorie = calorie;
+        this.pet = pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
+    }
+
+    public void setUserRecord(UserRecord userRecord) {
+        this.userRecord = userRecord;
+
+        if(!userRecord.getPetRecords().contains(this)) {
+            userRecord.addPetRecord(this);
+        }
+    }
 }

@@ -11,6 +11,7 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.*;
 
 @Getter
@@ -38,7 +39,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = PERSIST)
     private List<Pet> pets = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

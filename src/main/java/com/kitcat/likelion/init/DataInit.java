@@ -1,7 +1,9 @@
 package com.kitcat.likelion.init;
 
+import com.kitcat.likelion.domain.Pet;
 import com.kitcat.likelion.domain.Post;
 import com.kitcat.likelion.domain.User;
+import com.kitcat.likelion.domain.enumration.GrowthStatus;
 import com.kitcat.likelion.domain.enumration.RoleType;
 import com.kitcat.likelion.repository.PostRepository;
 import com.kitcat.likelion.repository.UserRepository;
@@ -23,13 +25,13 @@ public class DataInit {
         User user1 = new User("test@naver.com","user1", encoder.encode("1234"), RoleType.USER, 178.7, 76.2);
         User user = new User("test0@naver.com","user0", encoder.encode("1234"), RoleType.USER, 178.7, 76.2);
 
-//        Post post1 = new Post("test11", "test_content11", 1, 1, user1);
-//        Post post = new Post("test", "test_content", 0, 0, user);
+        Pet pet1 = new Pet("초코", "/dog1", 4.2, GrowthStatus.GROWING_UP_LESS_FOUR_MONTH);
+        Pet pet2 = new Pet("우유", "/dog2", 5.6, GrowthStatus.NEUTERED_ADULT);
+
+        pet1.setUser(user1);
+        pet2.setUser(user1);
 
         userRepository.save(user1);
         userRepository.save(user);
-//
-//        postRepository.save(post1);
-//        postRepository.save(post);
     }
 }
