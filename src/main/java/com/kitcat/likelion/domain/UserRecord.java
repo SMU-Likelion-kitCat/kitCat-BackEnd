@@ -28,11 +28,22 @@ public class UserRecord extends BaseTime {
     @ManyToOne(fetch = LAZY)
     private User user;
 
+    @ManyToOne(fetch = LAZY)
+    private Routine routine;
+
     @OneToMany(mappedBy = "userRecord", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetRecord> petRecords = new ArrayList<>();
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setRoutine(Routine routine) {
+        this.routine = routine;
+
+        if(!routine.getUserRecords().contains(this)) {
+            routine.addUserRecord(this);
+        }
     }
 
     public void addPetRecord(PetRecord petRecord) {

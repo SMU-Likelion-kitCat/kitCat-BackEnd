@@ -9,6 +9,9 @@ import java.util.List;
 @Getter
 public class RecordCreateDTO {
 
+    @Schema(description = "선택한 루틴 Id(선택하지 않았으면 null)", example = "1")
+    private Long routineId;
+
     @Schema(description = "소모 칼로리", example = "230")
     private int calorie;
 
