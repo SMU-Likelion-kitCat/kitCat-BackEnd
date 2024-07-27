@@ -36,9 +36,9 @@ public class RoutineService {
                 .count(dto.getCount())
                 .target(dto.getTarget())
                 .colorCode(dto.getColorCode())
-                .routineBase(RoutineBase.valueOf(RoutineBase.class, dto.getRoutineBase()))
-                .routineType(RoutineType.valueOf(RoutineType.class, dto.getRoutineType()))
-                .routineTerm(RoutineTerm.valueOf(RoutineTerm.class, dto.getRoutineTerm()))
+                .routineBase(RoutineBase.fromString(dto.getRoutineBase()))
+                .routineType(RoutineType.fromString(dto.getRoutineType()))
+                .routineTerm(RoutineTerm.fromString(dto.getRoutineTerm()))
                 .build();
 
         routine.setUser(user);

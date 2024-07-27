@@ -21,21 +21,21 @@ public class RoutineCreateDTO {
     private String colorCode;
 
     @Schema(description = "루틴 유형 \n" +
-            "    TIME(\"시간 목표를 달성하는 방식\"),\n" +
-            "    CALORIE(\"칼로리 목표를 달성하는 방식\"),\n" +
-            "    DISTANCE(\"산책 거리 목표를 달성하는 방식\")", example = "TIME")
+            "    TIME(\"시간 목표\"),\n" +
+            "    CALORIE(\"칼로리 목표\"),\n" +
+            "    DISTANCE(\"산책 거리 목표\")", example = "시간 목표")
     private String routineType;
 
     @Schema(description = "루틴 기간 \n" +
             "    ONE_WEEKS(\"1주\"),\n" +
             "    TWO_WEEKS(\"2주\"),\n" +
             "    THREE_WEEKS(\"3주\"),\n" +
-            "    FOUR_WEEKS(\"4주\"),\n" , example = "TWO_WEEKS")
+            "    FOUR_WEEKS(\"4주\"),\n" , example = "2주")
     private String routineTerm;
 
     @Schema(description = "루틴 빈도 - 기준\n" +
             "    DAY(\"하루\"),\n" +
-            "    WEEK(\"일주일\");", example = "WEEK")
+            "    WEEK(\"일주일\");", example = "일주일")
     private String routineBase;
 
     @Schema(description = "루틴 빈도 - 회수", example = "3")

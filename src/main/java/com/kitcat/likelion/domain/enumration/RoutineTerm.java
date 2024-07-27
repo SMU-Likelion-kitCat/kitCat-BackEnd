@@ -11,4 +11,13 @@ public enum RoutineTerm {
     RoutineTerm(String routineTerm) {
         this.routineTerm = routineTerm;
     }
+
+    public static RoutineTerm fromString(String text) {
+        for (RoutineTerm rt : RoutineTerm.values()) {
+            if (rt.routineTerm.equals(text)) {
+                return rt;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with text " + text);
+    }
 }

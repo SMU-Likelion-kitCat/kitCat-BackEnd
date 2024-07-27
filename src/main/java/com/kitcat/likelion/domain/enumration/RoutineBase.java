@@ -9,4 +9,13 @@ public enum RoutineBase {
     RoutineBase(String routineBase) {
         this.routineBase = routineBase;
     }
+
+    public static RoutineBase fromString(String text) {
+        for (RoutineBase rb : RoutineBase.values()) {
+            if (rb.routineBase.equals(text)) {
+                return rb;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with text " + text);
+    }
 }
