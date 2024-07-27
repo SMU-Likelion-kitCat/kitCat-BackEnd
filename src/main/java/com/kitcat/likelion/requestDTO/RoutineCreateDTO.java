@@ -11,8 +11,11 @@ public class RoutineCreateDTO {
     @Schema(description = "루틴 이름", example = "달리기")
     private String name;
 
-    @Schema(description = "루틴 목표", example = "1.5")
-    private String target;
+    @Schema(description = "루틴 최종 목표(시간은 분 단위, 거리는 m 단위로 치환해서 보내 주세요)", example = "55")
+    private int target;
+
+    @Schema(description = "단계별 목표 단위(시간은 분 단위, 거리는 m 단위로 치환해서 보내 주세요)", example = "5")
+    private int step;
 
     @Schema(description = "하이라이트", example = "#FFFFFF")
     private String colorCode;
@@ -27,8 +30,14 @@ public class RoutineCreateDTO {
             "    ONE_WEEKS(\"1주\"),\n" +
             "    TWO_WEEKS(\"2주\"),\n" +
             "    THREE_WEEKS(\"3주\"),\n" +
-            "    TEN_DAYS(\"10일\"),\n" +
-            "    ONE_MONTHS(\"한 달\"),\n" +
-            "    TWO_MONTHS(\"두 달\")", example = "TWO_WEEKS")
+            "    FOUR_WEEKS(\"4주\"),\n" , example = "TWO_WEEKS")
     private String routineTerm;
+
+    @Schema(description = "루틴 빈도 - 기준\n" +
+            "    DAY(\"하루\"),\n" +
+            "    WEEK(\"일주일\");", example = "WEEK")
+    private String routineBase;
+
+    @Schema(description = "루틴 빈도 - 회수", example = "3")
+    private int count;
 }

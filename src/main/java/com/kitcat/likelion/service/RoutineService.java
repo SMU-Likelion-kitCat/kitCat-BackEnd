@@ -3,6 +3,7 @@ package com.kitcat.likelion.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.kitcat.likelion.domain.Routine;
 import com.kitcat.likelion.domain.User;
+import com.kitcat.likelion.domain.enumration.RoutineBase;
 import com.kitcat.likelion.domain.enumration.RoutineTerm;
 import com.kitcat.likelion.domain.enumration.RoutineType;
 import com.kitcat.likelion.repository.RoutineRepository;
@@ -27,8 +28,11 @@ public class RoutineService {
 
         Routine routine = Routine.builder()
                 .name(dto.getName())
+                .step(dto.getStep())
+                .count(dto.getCount())
                 .target(dto.getTarget())
                 .colorCode(dto.getColorCode())
+                .routineBase(RoutineBase.valueOf(dto.getRoutineBase()))
                 .routineType(RoutineType.valueOf(dto.getRoutineType()))
                 .routineTerm(RoutineTerm.valueOf(dto.getRoutineTerm()))
                 .build();
