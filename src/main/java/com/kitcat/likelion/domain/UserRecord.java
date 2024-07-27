@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 
 @Getter
@@ -27,6 +28,20 @@ public class UserRecord extends BaseTime {
     @ManyToOne(fetch = LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "userRecord")
+    @OneToMany(mappedBy = "userRecord", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetRecord> petRecords = new ArrayList<>();
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void addPetRecord(PetRecord petRecord) {
+        this.petRecords.add(petRecord);
+    }
+
+    public UserRecord(int calorie, int distance, int walkTime) {
+        this.calorie = calorie;
+        this.distance = distance;
+        this.walkTime = walkTime;
+    }
 }
