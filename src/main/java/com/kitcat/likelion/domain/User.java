@@ -42,7 +42,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = PERSIST)
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = PERSIST)
     private List<Routine> routines = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
