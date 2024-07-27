@@ -1,11 +1,9 @@
 package com.kitcat.likelion.service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.kitcat.likelion.domain.Pet;
-import com.kitcat.likelion.domain.PetRecord;
-import com.kitcat.likelion.domain.User;
-import com.kitcat.likelion.domain.UserRecord;
+import com.kitcat.likelion.domain.*;
 import com.kitcat.likelion.repository.PetRepository;
+import com.kitcat.likelion.repository.RoutineRepository;
 import com.kitcat.likelion.repository.UserRecordRepository;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.PetCalorieDTO;
@@ -25,17 +23,28 @@ public class RecordService {
 
     private final UserRepository userRepository;
 
+    private final RoutineRepository routineRepository;
+
     private final UserRecordRepository userRecordRepository;
 
     @Transactional
     public void save(Long userId, RecordCreateDTO dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found id : " + userId));
+        Long routineId = dto.getRoutineId();
+
+        Routine routine = null;
+
+        if(dto.getRoutineId() != null) {
+            routine = routineRepository.findById(routineId)
+                    .orElseThrow(() -> new NotFoundException("Could not found id : " + routineId));
+        }
 
         List<PetCalorieDTO> petCalorieDTOS = dto.getPetRecords();
 
         UserRecord userRecord = new UserRecord(dto.getCalorie(), dto.getDistance(), dto.getWalkTime());
         userRecord.setUser(user);
+        userRecord.setRoutine(routine);
 
         for (PetCalorieDTO petCalorie : petCalorieDTOS) {
             Pet pet = petRepository.findById(petCalorie.getPetId())

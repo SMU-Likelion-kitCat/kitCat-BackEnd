@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 
@@ -41,6 +44,13 @@ public class Routine extends BaseTime {
 
     @ManyToOne(fetch = LAZY)
     private User user;
+
+    @OneToMany(mappedBy = "routine")
+    private List<UserRecord> userRecords = new ArrayList<>();
+
+    public void addUserRecord(UserRecord userRecord) {
+        this.userRecords.add(userRecord);
+    }
 
     public void setUser(User user) {
         this.user = user;
