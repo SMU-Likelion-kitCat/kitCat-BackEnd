@@ -26,9 +26,9 @@ public class RoutineDTO {
 
     private String colorCode;
 
-    private RoutineBase routineBase;
+    private String routineBase;
 
-    private RoutineType routineType;
+    private String routineType;
 
-    private RoutineTerm routineTerm;
+    private int routineTerm;
 }

@@ -1,5 +1,8 @@
 package com.kitcat.likelion.domain.enumration;
 
+import lombok.Getter;
+
+@Getter
 public enum RoutineTerm {
     ONE_WEEKS("1주"),
     TWO_WEEKS("2주"),

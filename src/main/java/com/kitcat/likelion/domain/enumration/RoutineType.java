@@ -1,5 +1,8 @@
 package com.kitcat.likelion.domain.enumration;
 
+import lombok.Getter;
+
+@Getter
 public enum RoutineType {
     TIME("시간 목표"),
     CALORIE("칼로리 목표"),
