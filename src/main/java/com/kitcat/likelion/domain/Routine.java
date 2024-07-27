@@ -1,13 +1,12 @@
 package com.kitcat.likelion.domain;
 
+import com.kitcat.likelion.domain.enumration.RoutineBase;
 import com.kitcat.likelion.domain.enumration.RoutineTerm;
 import com.kitcat.likelion.domain.enumration.RoutineType;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
@@ -21,15 +20,18 @@ public class Routine extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String target;
+    private int step;
+
+    private int count;
+
+    private int target;
 
     private String name;
 
     private String colorCode;
 
-    /**
-     * ToDo: 루틴 빈도 만들기
-     */
+    @Enumerated(STRING)
+    private RoutineBase routineBase;
 
     @Enumerated(STRING)
     private RoutineType routineType;
@@ -49,11 +51,14 @@ public class Routine extends BaseTime {
     }
 
     @Builder
-    public Routine(String target, String name, String colorCode, RoutineType routineType, RoutineTerm routineTerm) {
-        this.target = target;
+    public Routine(int target, int step, String name, String colorCode, RoutineType routineType, RoutineTerm routineTerm, RoutineBase routineBase, int count) {
+        this.step = step;
         this.name = name;
+        this.count = count;
+        this.target = target;
         this.colorCode = colorCode;
         this.routineType = routineType;
         this.routineTerm = routineTerm;
+        this.routineBase = routineBase;
     }
 }
