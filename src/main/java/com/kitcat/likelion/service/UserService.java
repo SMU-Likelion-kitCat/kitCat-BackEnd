@@ -1,10 +1,12 @@
 package com.kitcat.likelion.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.kitcat.likelion.domain.User;
 import com.kitcat.likelion.domain.enumration.RoleType;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.LoginDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
+import com.kitcat.likelion.responseDTO.UserInfoDTO;
 import com.kitcat.likelion.security.custom.CustomUserInfoDto;
 import com.kitcat.likelion.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class UserService {
 
     @Transactional
     public void register(RegisterDTO dto) {
-        User user = new User(dto.getEmail(), dto.getNickname(), encoder.encode(dto.getPassword()), RoleType.USER, dto.getHeight(), dto.getWeight());
+        User user = new User(dto.getEmail(), dto.getNickname(), encoder.encode(dto.getPassword()), RoleType.USER, dto.getHeight(), dto.getWeight(), dto.getBmi());
         userRepository.save(user);
     }
 
@@ -60,5 +62,12 @@ public class UserService {
         }
 
         return "duplicate";
+    }
+
+    public UserInfoDTO getInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found id : " + userId));
+
+        return new UserInfoDTO(user.getNickname(), user.getHeight(), user.getWeight(), user.getBmi());
     }
 }

@@ -3,6 +3,7 @@ package com.kitcat.likelion.controller;
 import com.kitcat.likelion.requestDTO.LoginDTO;
 import com.kitcat.likelion.requestDTO.PetsDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
+import com.kitcat.likelion.responseDTO.UserInfoDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,13 +36,6 @@ public class UserController {
     @PostMapping("/register")
     @Operation(summary = "회원 가입 기능", description = "회원가입에 사용되는 API")
     @ApiResponse(responseCode = "200", description = "회원 가입 성공", content = @Content(mediaType = "application/json"))
-    @Parameters({
-            @Parameter(name = "email", description = "아이디(이메일)", example = "user2@naver.com"),
-            @Parameter(name = "password", description = "비밀번호", example = "1234"),
-            @Parameter(name = "nickname", description = "닉네임", example = "user2"),
-            @Parameter(name = "height", description = "키", example = "182.3"),
-            @Parameter(name = "weight", description = "체중", example = "73.6")
-    })
     public String register(@RequestBody RegisterDTO dto) {
         userService.register(dto);
 
@@ -113,6 +107,13 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(emailStatus);
+    }
+
+    @GetMapping("/info")
+    @Operation(summary = "사용자 정보 조회", description = "사용자의 정보를 조회하는 API")
+    @ApiResponse(responseCode = "200", description = "조회 완료", content = @Content(mediaType = "application/json"))
+    public UserInfoDTO info(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userService.getInfo(userDetails.getUserId());
     }
 
     @GetMapping("/test")

@@ -34,8 +34,8 @@ public class PetController {
     @Operation(summary = "반려견 저장", description = "반려견 정보 저장하는 API")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
     @PreAuthorize("isAuthenticated()")
-    public String save(@RequestPart("dto") List<PetsDTO> dto,
-                       @RequestPart("files") List<MultipartFile> files,
+    public String save(@RequestPart(value = "dto") List<PetsDTO> dto,
+                       @RequestPart(value = "files", required = false) List<MultipartFile> files,
                        @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         petService.savePets(dto, files, userDetails.getUserId());
         return "success";

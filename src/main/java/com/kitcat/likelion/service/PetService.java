@@ -52,7 +52,7 @@ public class PetService {
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
 
-            //amazonS3.putObject(bucket, image, file.getInputStream(), metadata);
+            amazonS3.putObject(bucket, image, file.getInputStream(), metadata);
             petRepository.save(pet);
         }
     }
