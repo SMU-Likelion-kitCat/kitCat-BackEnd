@@ -36,6 +36,8 @@ public class User {
 
     private double weight;
 
+    private double bmi;
+
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
@@ -51,13 +53,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Heart> hearts  = new ArrayList<>();
 
-    public User(String email, String nickname, String password, RoleType role, double height, double weight) {
+    public User(String email, String nickname, String password, RoleType role, double height, double weight, double bmi) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
         this.height = height;
         this.weight = weight;
+        this.bmi = bmi;
     }
 
     public void addPet(Pet pet) {
