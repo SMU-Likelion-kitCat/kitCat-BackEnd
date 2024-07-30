@@ -24,8 +24,8 @@ public class DataInit {
 
     @PostConstruct
     public void init() {
-        User user1 = new User("test@naver.com","user1", encoder.encode("1234"), RoleType.USER, 178.7, 76.2);
-        User user = new User("test0@naver.com","user0", encoder.encode("1234"), RoleType.USER, 178.7, 76.2);
+        User user1 = new User("test@naver.com","user1", encoder.encode("1234"), RoleType.USER, 178.7, 76.2, 18.2);
+        User user = new User("test0@naver.com","user0", encoder.encode("1234"), RoleType.USER, 178.7, 76.2, 21.8);
 
         Pet pet1 = new Pet("초코", "/dog1", 4.2, GrowthStatus.GROWING_UP_LESS_FOUR_MONTH);
         Pet pet2 = new Pet("기름이", "/dog2", 5.6, GrowthStatus.NEUTERED_ADULT);
