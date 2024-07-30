@@ -1,9 +1,6 @@
 package com.kitcat.likelion.init;
 
-import com.kitcat.likelion.domain.Pet;
-import com.kitcat.likelion.domain.Post;
-import com.kitcat.likelion.domain.Routine;
-import com.kitcat.likelion.domain.User;
+import com.kitcat.likelion.domain.*;
 import com.kitcat.likelion.domain.enumration.*;
 import com.kitcat.likelion.repository.PostRepository;
 import com.kitcat.likelion.repository.UserRepository;
@@ -57,6 +54,22 @@ public class DataInit {
 
         routine1.setUser(user1);
         routine2.setUser(user1);
+
+        UserRecord userRecord1 = new UserRecord(120, 3200, 61);
+        UserRecord userRecord2 = new UserRecord(130, 3300, 62);
+        UserRecord userRecord3 = new UserRecord(140, 3400, 63);
+
+        userRecord1.setUser(user1);
+        userRecord2.setUser(user1);
+        userRecord3.setUser(user1);
+
+        userRecord1.setRoutine(routine1);
+        userRecord2.setRoutine(routine1);
+        userRecord3.setRoutine(routine1);
+
+        userRecord1.addPetRecord(new PetRecord(110, pet1));
+        userRecord2.addPetRecord(new PetRecord(110, pet1));
+        userRecord3.addPetRecord(new PetRecord(110, pet1));
 
         Post post1 = new Post("test1", "test_content1", 0, 1, user1);
         Post post2 = new Post("test2", "test_content2", 0, 1, user1);

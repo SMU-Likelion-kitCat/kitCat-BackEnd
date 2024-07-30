@@ -78,24 +78,30 @@ public class RoutineService {
     public List<WeekRecordDTO> getRoutineRecord(Long routineId) {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new NotFoundException("Could not found id : " + routineId));
+        LocalDateTime routineDate = routine.getCreateDate();
 
         List<UserRecord> routineRecords = userRecordRepository.findRoutineRecords(routineId);
         List<WeekRecordDTO> result = new ArrayList<>();
         WeekRecordDTO weekRecord = new WeekRecordDTO();
 
         int week = 1;
+        System.out.println("routineDate = " + routineDate);
 
         for (UserRecord userRecord : routineRecords) {
             LocalDateTime recordDate = userRecord.getCreateDate();
+            System.out.println("recordDate = " + recordDate);
 
-            if(recordDate.isBefore(routine.getCreateDate().plusWeeks(week))) {
+            // 산책 기록 날짜가 루틴 생성 날짜(+week)전이 아니라면
+            if(!recordDate.isBefore(routineDate.plusWeeks(week))) {
                 week++;
                 result.add(weekRecord);
-                weekRecord.getWeekRecordDTOList().clear();
+                weekRecord = new WeekRecordDTO();
+                weekRecord.getRecords().clear();
             }
 
-            weekRecord.addWeekRecord(new RecordDTO(userRecord.getCreateDate(), userRecord.getWalkTime()));
+            weekRecord.addRecord(new RecordDTO(userRecord.getCreateDate(), userRecord.getWalkTime()));
         }
+        result.add(weekRecord);
 
         return result;
     }
