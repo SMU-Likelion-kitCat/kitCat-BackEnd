@@ -3,17 +3,22 @@ package com.kitcat.likelion.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.kitcat.likelion.domain.Routine;
 import com.kitcat.likelion.domain.User;
+import com.kitcat.likelion.domain.UserRecord;
 import com.kitcat.likelion.domain.enumration.RoutineBase;
 import com.kitcat.likelion.domain.enumration.RoutineTerm;
 import com.kitcat.likelion.domain.enumration.RoutineType;
 import com.kitcat.likelion.repository.RoutineRepository;
+import com.kitcat.likelion.repository.UserRecordRepository;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.RoutineCreateDTO;
+import com.kitcat.likelion.responseDTO.RecordDTO;
 import com.kitcat.likelion.responseDTO.RoutineDTO;
+import com.kitcat.likelion.responseDTO.WeekRecordDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +29,8 @@ public class RoutineService {
 
     private final UserRepository userRepository;
     private final RoutineRepository routineRepository;
+
+    private final UserRecordRepository userRecordRepository;
 
     @Transactional
     public void save(Long userId, RoutineCreateDTO dto) {
@@ -66,5 +73,30 @@ public class RoutineService {
         }
 
         return dtos;
+    }
+
+    public List<WeekRecordDTO> getRoutineRecord(Long routineId) {
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new NotFoundException("Could not found id : " + routineId));
+
+        List<UserRecord> routineRecords = userRecordRepository.findRoutineRecords(routineId);
+        List<WeekRecordDTO> result = new ArrayList<>();
+        WeekRecordDTO weekRecord = new WeekRecordDTO();
+
+        int week = 1;
+
+        for (UserRecord userRecord : routineRecords) {
+            LocalDateTime recordDate = userRecord.getCreateDate();
+
+            if(recordDate.isBefore(routine.getCreateDate().plusWeeks(week))) {
+                week++;
+                result.add(weekRecord);
+                weekRecord.getWeekRecordDTOList().clear();
+            }
+
+            weekRecord.addWeekRecord(new RecordDTO(userRecord.getCreateDate(), userRecord.getWalkTime()));
+        }
+
+        return result;
     }
 }

@@ -117,15 +117,7 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    @PreAuthorize("isAuthenticated()")
-    public Long test(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userDetails.getUserId();
-    }
-
-    @PostMapping("/test")
-    public String test(@RequestBody PetsDTO dto) {
-        System.out.println("dto = " + dto);
-        //petService.savePets(dto.getPetsDTOS(), userDetails.getUserId());
+    public String test() {
         return "success";
     }
 }
