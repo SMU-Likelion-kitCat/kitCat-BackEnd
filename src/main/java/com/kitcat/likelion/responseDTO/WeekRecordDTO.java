@@ -14,9 +14,9 @@ import java.util.List;
 public class WeekRecordDTO {
 
     @Schema(description = "주차별 산책 기록(인덱스 0 부터 1주차 기록)")
-    private List<RecordDTO> weekRecordDTOList = new ArrayList<>();
+    private List<RecordDTO> records = new ArrayList<>();
 
-    public void addWeekRecord(RecordDTO record) {
-        this.weekRecordDTOList.add(record);
+    public void addRecord(RecordDTO record) {
+        this.records.add(record);
     }
 }

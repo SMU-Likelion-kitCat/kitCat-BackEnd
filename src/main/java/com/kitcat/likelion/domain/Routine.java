@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 
@@ -45,7 +46,7 @@ public class Routine extends BaseTime {
     @ManyToOne(fetch = LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "routine")
+    @OneToMany(mappedBy = "routine",cascade = PERSIST)
     private List<UserRecord> userRecords = new ArrayList<>();
 
     public void addUserRecord(UserRecord userRecord) {
