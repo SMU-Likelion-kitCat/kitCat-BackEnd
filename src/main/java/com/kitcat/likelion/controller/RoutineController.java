@@ -4,6 +4,7 @@ import com.kitcat.likelion.requestDTO.LoginDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
 import com.kitcat.likelion.requestDTO.RoutineCreateDTO;
 import com.kitcat.likelion.responseDTO.RoutineDTO;
+import com.kitcat.likelion.responseDTO.RoutineDetailDTO;
 import com.kitcat.likelion.responseDTO.WeekRecordDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.service.RoutineService;
@@ -46,7 +47,7 @@ public class RoutineController {
     @GetMapping("/record/{routineId}")
     @Operation(summary = "루틴 주처별 기록", description = "사용자가 선택한 루틴의 주차별 기록을 조회하는 API")
     @ApiResponse(responseCode = "200", description = "루틴 조회 성공", content = @Content(mediaType = "application/json"))
-    public List<WeekRecordDTO> routineRecord(@PathVariable("routineId") Long routineId) {
+    public RoutineDetailDTO routineRecord(@PathVariable("routineId") Long routineId) {
         return routineService.getRoutineRecord(routineId);
     }
 }
