@@ -60,6 +60,6 @@ public class PetService {
     public List<PetInfoDTO> getPets(Long userId) {
         List<Pet> pets = petRepository.findPetsByUserId(userId);
 
-        return pets.stream().map(pet -> new PetInfoDTO(pet.getId(), pet.getName(), pet.getImage())).toList();
+        return pets.stream().map(pet -> new PetInfoDTO(pet.getId(), pet.getName(), pet.getImage(), pet.getWeight())).toList();
     }
 }

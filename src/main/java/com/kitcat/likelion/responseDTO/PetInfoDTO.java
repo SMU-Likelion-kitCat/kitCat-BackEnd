@@ -12,4 +12,6 @@ public class PetInfoDTO {
     private String name;
 
     private String image;
+
+    private double weight;
 }
