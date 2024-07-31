@@ -34,6 +34,9 @@ public class UserRecord extends BaseTime {
     @OneToMany(mappedBy = "userRecord", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
     private List<PetRecord> petRecords = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userRecord", cascade = {PERSIST, REMOVE}, orphanRemoval = true)
+    private List<Path> paths = new ArrayList<>();
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -48,6 +51,10 @@ public class UserRecord extends BaseTime {
 
     public void addPetRecord(PetRecord petRecord) {
         this.petRecords.add(petRecord);
+    }
+
+    public void addPath(Path path) {
+        this.paths.add(path);
     }
 
     public UserRecord(int calorie, int distance, int walkTime) {

@@ -6,6 +6,7 @@ import com.kitcat.likelion.repository.PetRepository;
 import com.kitcat.likelion.repository.RoutineRepository;
 import com.kitcat.likelion.repository.UserRecordRepository;
 import com.kitcat.likelion.repository.UserRepository;
+import com.kitcat.likelion.requestDTO.LocationDTO;
 import com.kitcat.likelion.requestDTO.PetCalorieDTO;
 import com.kitcat.likelion.requestDTO.RecordCreateDTO;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,13 @@ public class RecordService {
             PetRecord petRecord = new PetRecord(petCalorie.getCalorie(), pet);
             petRecord.setUserRecord(userRecord);
             petRecord.setPet(pet);
+        }
+
+        List<LocationDTO> paths = dto.getPath();
+
+        for (LocationDTO location : paths) {
+            Path path = new Path(location.getLatitude(), location.getLongitude());
+            path.setUserRecord(userRecord);
         }
 
         userRecordRepository.save(userRecord);

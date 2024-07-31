@@ -21,6 +21,9 @@ public class RecordCreateDTO {
     @Schema(description = "산책 시간", example = "3620")
     private int walkTime;
 
+    @Schema(description = "사용자의 산책 경로")
+    private List<LocationDTO> path = new ArrayList<>();
+
     @Schema(description = "선택한 반려견 소모 칼로리 배열")
     private List<PetCalorieDTO> petRecords = new ArrayList<>();
 }
