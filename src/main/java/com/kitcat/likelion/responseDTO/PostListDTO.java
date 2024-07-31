@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 public class PostListDTO {
 
+    private Long postId;
+
     private String content;
 
     private String writer;
