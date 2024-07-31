@@ -13,6 +13,7 @@ import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.RoutineCreateDTO;
 import com.kitcat.likelion.responseDTO.RecordDTO;
 import com.kitcat.likelion.responseDTO.RoutineDTO;
+import com.kitcat.likelion.responseDTO.RoutineDetailDTO;
 import com.kitcat.likelion.responseDTO.WeekRecordDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -75,16 +76,20 @@ public class RoutineService {
         return dtos;
     }
 
-    public List<WeekRecordDTO> getRoutineRecord(Long routineId) {
+    public RoutineDetailDTO getRoutineRecord(Long routineId) {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new NotFoundException("Could not found id : " + routineId));
         LocalDateTime routineDate = routine.getCreateDate();
 
         List<UserRecord> routineRecords = userRecordRepository.findRoutineRecords(routineId);
         List<WeekRecordDTO> result = new ArrayList<>();
+        List<String> achievement = new ArrayList<>();
+
         WeekRecordDTO weekRecord = new WeekRecordDTO();
 
-        int week = 1;
+        int week = 1, base = routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0';
+        RoutineType type = routine.getRoutineType();
+
         System.out.println("routineDate = " + routineDate);
 
         for (UserRecord userRecord : routineRecords) {
@@ -99,10 +104,35 @@ public class RoutineService {
                 weekRecord.getRecords().clear();
             }
 
-            weekRecord.addRecord(new RecordDTO(userRecord.getCreateDate(), userRecord.getWalkTime()));
+            int record = type.equals(RoutineType.TIME) ? userRecord.getWalkTime() :
+                    (type.equals(RoutineType.DISTANCE) ? userRecord.getDistance() : userRecord.getCalorie());
+
+            weekRecord.addRecord(new RecordDTO(userRecord.getCreateDate(), record, false));
         }
         result.add(weekRecord);
 
-        return result;
+        for(int i = 0; i < 4; i++) {
+
+            if(result.size() > i) {
+                int goal = routine.getTarget() - (routine.getStep() * (base - i + 1));
+                int count = 0;
+
+                for(RecordDTO recordDTO : result.get(i).getRecords()) {
+                    if(goal < recordDTO.getRecord()) {
+                        count++;
+                        recordDTO.setSuccess(true);
+                    }
+                }
+
+                achievement.add(count >= routine.getCount() ? "SUCCESS" : "FAIL");
+            }
+
+            else {
+                achievement.add("NONE");
+            }
+        }
+        System.out.println("achievement = " + achievement);
+
+        return new RoutineDetailDTO(achievement, result);
     }
 }

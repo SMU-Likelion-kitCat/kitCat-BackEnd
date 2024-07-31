@@ -9,9 +9,16 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class RecordDTO {
-    @Schema(description = "산첵 종료 시간")
+    @Schema(description = "산책 종료 시간")
     private LocalDateTime recordTime;
 
-    @Schema(description = "산첵 시간")
-    private int walkTime;
+    @Schema(description = "산책 기록(시간, 칼로리, 거리)")
+    private int record;
+
+    @Schema(description = "기록 달성 여부")
+    private boolean success;
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 }

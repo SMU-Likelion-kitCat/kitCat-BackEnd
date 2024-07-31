@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeekRecordDTO {
-
     @Schema(description = "주차별 산책 기록(인덱스 0 부터 1주차 기록)")
     private List<RecordDTO> records = new ArrayList<>();
 
