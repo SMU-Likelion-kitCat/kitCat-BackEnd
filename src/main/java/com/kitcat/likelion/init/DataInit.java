@@ -67,9 +67,13 @@ public class DataInit {
         userRecord2.setRoutine(routine1);
         userRecord3.setRoutine(routine1);
 
-        userRecord1.addPetRecord(new PetRecord(110, pet1));
-        userRecord2.addPetRecord(new PetRecord(110, pet1));
-        userRecord3.addPetRecord(new PetRecord(110, pet1));
+        PetRecord petRecord1 = new PetRecord(110, pet1);
+        PetRecord petRecord2 = new PetRecord(120, pet1);
+        PetRecord petRecord3 = new PetRecord(130, pet1);
+
+        petRecord1.setUserRecord(userRecord1);
+        petRecord2.setUserRecord(userRecord2);
+        petRecord3.setUserRecord(userRecord3);
 
         Post post1 = new Post("test1", "test_content1", 0, 1, user1);
         Post post2 = new Post("test2", "test_content2", 0, 1, user1);
