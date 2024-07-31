@@ -31,4 +31,6 @@ public class RoutineDTO {
     private String routineType;
 
     private int routineTerm;
+
+    private int progress;
 }

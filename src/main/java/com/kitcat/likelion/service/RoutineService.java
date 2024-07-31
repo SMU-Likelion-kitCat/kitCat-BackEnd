@@ -58,6 +58,8 @@ public class RoutineService {
         List<RoutineDTO> dtos = new ArrayList<>();
 
         for (Routine routine : routineList) {
+            double progress = ((double) routine.getUserRecords().size() / (double) ((routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0') * routine.getCount())) * 100;
+
             RoutineDTO dto = RoutineDTO.builder()
                     .routineId(routine.getId())
                     .name(routine.getName())
@@ -68,8 +70,10 @@ public class RoutineService {
                     .routineBase(routine.getRoutineBase().getRoutineBase())
                     .routineTerm(routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0')
                     .routineType(routine.getRoutineType().getRoutineType())
+                    .progress((int) progress)
                     .build();
-
+            System.out.println(routine.getUserRecords().size());
+            System.out.println((routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0') * routine.getCount());
             dtos.add(dto);
         }
 
