@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 @RequiredArgsConstructor
 public class DataInit {
@@ -58,6 +60,14 @@ public class DataInit {
         UserRecord userRecord1 = new UserRecord(120, 3200, 61);
         UserRecord userRecord2 = new UserRecord(130, 3300, 62);
         UserRecord userRecord3 = new UserRecord(140, 3400, 63);
+
+        Path path1 = new Path(new BigDecimal("37.5665"), new BigDecimal("126.9780"));
+        Path path2 = new Path(new BigDecimal("35.1796"), new BigDecimal("129.0756"));
+        Path path3 = new Path(new BigDecimal("35.1550"), new BigDecimal("126.8495"));
+
+        path1.setUserRecord(userRecord1);
+        path2.setUserRecord(userRecord1);
+        path3.setUserRecord(userRecord1);
 
         userRecord1.setUser(user1);
         userRecord2.setUser(user1);
