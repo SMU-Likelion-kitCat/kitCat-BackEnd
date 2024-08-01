@@ -42,18 +42,18 @@ public class RecordService {
                 .orElseThrow(() -> new NotFoundException("Could not found id : " + userId));
         Long routineId = dto.getRoutineId();
 
+        UserRecord userRecord = new UserRecord(dto.getCalorie(), dto.getDistance(), dto.getWalkTime());
+        userRecord.setUser(user);
+
         Routine routine = null;
 
         if(dto.getRoutineId() != null) {
             routine = routineRepository.findById(routineId)
                     .orElseThrow(() -> new NotFoundException("Could not found id : " + routineId));
+            userRecord.setRoutine(routine);
         }
 
         List<PetCalorieDTO> petCalorieDTOS = dto.getPetRecords();
-
-        UserRecord userRecord = new UserRecord(dto.getCalorie(), dto.getDistance(), dto.getWalkTime());
-        userRecord.setUser(user);
-        userRecord.setRoutine(routine);
 
         for (PetCalorieDTO petCalorie : petCalorieDTOS) {
             Pet pet = petRepository.findById(petCalorie.getPetId())
