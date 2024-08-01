@@ -11,16 +11,15 @@ import com.kitcat.likelion.repository.RoutineRepository;
 import com.kitcat.likelion.repository.UserRecordRepository;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.RoutineCreateDTO;
-import com.kitcat.likelion.responseDTO.RecordDTO;
-import com.kitcat.likelion.responseDTO.RoutineDTO;
-import com.kitcat.likelion.responseDTO.RoutineDetailDTO;
-import com.kitcat.likelion.responseDTO.WeekRecordDTO;
+import com.kitcat.likelion.responseDTO.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -138,5 +137,46 @@ public class RoutineService {
         System.out.println("achievement = " + achievement);
 
         return new RoutineDetailDTO(achievement, result);
+    }
+
+    public List<DayRoutineDTO> getMonthRoutine(Long userId, int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+
+        LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59);
+
+        int dayOfMonth = endOfMonth.getDayOfMonth();
+
+        DayRoutineDTO[] array = new DayRoutineDTO[dayOfMonth];
+        for(int i = 0; i < dayOfMonth; i++) {
+            array[i] = new DayRoutineDTO();
+        }
+
+        List<DayRoutineDTO> dayRoutines = Arrays.asList(array);
+        List<UserRecord> records = userRecordRepository.findBetweenDateFetchRoutine(startOfMonth, endOfMonth, userId);
+
+        for (UserRecord record : records) {
+            Routine routine = record.getRoutine();
+
+            double progress = ((double) routine.getUserRecords().size() / (double) ((routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0') * routine.getCount())) * 100;
+
+            RoutineDTO dto = RoutineDTO.builder()
+                    .routineId(routine.getId())
+                    .name(routine.getName())
+                    .step(routine.getStep())
+                    .count(routine.getCount())
+                    .target(routine.getTarget())
+                    .colorCode(routine.getColorCode())
+                    .routineBase(routine.getRoutineBase().getRoutineBase())
+                    .routineTerm(routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0')
+                    .routineType(routine.getRoutineType().getRoutineType())
+                    .progress((int) progress)
+                    .build();
+
+            int day = record.getCreateDate().getDayOfMonth();
+            dayRoutines.get(day - 1).addRoutine(dto);
+        }
+
+        return dayRoutines;
     }
 }
