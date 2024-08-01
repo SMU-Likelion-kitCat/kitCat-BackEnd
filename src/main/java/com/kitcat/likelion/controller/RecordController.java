@@ -5,6 +5,8 @@ import com.kitcat.likelion.responseDTO.DayRecordDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.service.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,6 +37,10 @@ public class RecordController {
     @GetMapping("/month/{year}/{month}")
     @Operation(summary = "선택한 년 월 산책 기록 반환", description = "선택한 년 월의 전체 산책 기록을 반환하는 API")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(mediaType = "application/json"))
+    @Parameters({
+            @Parameter(name = "year", description = "기록을 가져올 연도", example = "2024"),
+            @Parameter(name = "month", description = "기록을 가져올 달", example = "8")
+    })
     public List<DayRecordDTO> dayRecord(@PathVariable("year") int year,
                                         @PathVariable("month") int month,
                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
