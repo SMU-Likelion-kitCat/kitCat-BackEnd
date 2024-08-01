@@ -22,4 +22,13 @@ public interface UserRecordRepository extends JpaRepository<UserRecord, Long> {
     List<UserRecord> findBetweenDate(@Param("startOfMonth") LocalDateTime startOfMonth,
                                      @Param("endOfMonth") LocalDateTime endOfMonth,
                                      @Param("userId") Long userId);
+
+    @Query("select ur from UserRecord ur " +
+            "left join fetch ur.routine " +
+            "where (ur.createDate between :startOfMonth and :endOfMonth) " +
+            "and ur.user.id = :userId " +
+            "order by ur.createDate asc")
+    List<UserRecord> findBetweenDateFetchRoutine(@Param("startOfMonth") LocalDateTime startOfMonth,
+                                     @Param("endOfMonth") LocalDateTime endOfMonth,
+                                     @Param("userId") Long userId);
 }
