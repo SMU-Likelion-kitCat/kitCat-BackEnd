@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,37 +82,52 @@ public class PostController {
 
     @Operation(summary = "게시글에 좋아요 누르는 기능", description = "게시글 좋아요 누를 때 사용되는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "좋아요 성공")
+            @ApiResponse(responseCode = "200", description = "좋아요 성공"),
+            @ApiResponse(responseCode = "400", description = "중복좋아요 입력 실패")
     })
     @Parameters({
             @Parameter(name = "postId", description = "좋아요를 누르는 게시글 ID")
     })
     @GetMapping("/heart/insert")
-    public String insertHeart(@RequestParam Long postId,
-                                @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<String> insertHeart(@RequestParam Long postId,
+                                      @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        postService.insertHeart(userDetails.getUserId(), postId);
-        return "good";
+        String heartStatus =  postService.insertHeart(userDetails.getUserId(), postId);
+
+        if(heartStatus.equals("fail to add heart to post")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(heartStatus);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(heartStatus);
     }
 
     @Operation(summary = "좋아요를 삭제하는 기능", description = "좋아요 삭제시 사용되는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "좋아요 삭제 성공")
+            @ApiResponse(responseCode = "200", description = "좋아요 삭제 성공"),
+            @ApiResponse(responseCode = "400", description = "존재하지 않는 좋아요 삭제")
+
+
     })
     @Parameters({
             @Parameter(name = "postId", description = "삭제를 원하는 게시글 ID")
     })
     @GetMapping("/heart/delecte")
-    public String deleteHeart(@RequestParam Long postId,
+    public ResponseEntity<String> deleteHeart(@RequestParam Long postId,
                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        postService.deleteHeart(userDetails.getUserId(), postId);
-        return "good";
+        String heartStatus = postService.deleteHeart(userDetails.getUserId(), postId);
+        if(heartStatus.equals("fail to delete heart to post")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(heartStatus);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(heartStatus);
     }
 
     @Operation(summary = "게시글 목록보기(전체)", description = "게시글 전체 목록 볼 때 사용되는 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "전체 목록 조회 성공")
+            @ApiResponse(responseCode = "200", description = "전체 목록 조회 성공"),
+
+
     })
     @Parameters({
             @Parameter(name = "content", description = "게시글 내용"),
