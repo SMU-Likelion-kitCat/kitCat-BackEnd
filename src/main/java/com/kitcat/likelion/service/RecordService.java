@@ -102,6 +102,7 @@ public class RecordService {
                     .walkTime(record.getWalkTime())
                     .distance(record.getDistance())
                     .calorie(record.getCalorie())
+                    .endTime(record.getCreateDate())
                     .locations(locations)
                     .petRecords(petRecords)
                     .build();
