@@ -154,7 +154,7 @@ public class PostService {
     }
 
     @Transactional
-    public void insertHeart(Long userId, Long postId){
+    public String insertHeart(Long userId, Long postId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
 
@@ -162,7 +162,7 @@ public class PostService {
                 .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
 
         if(heartRepository.findByUserAndPost(user, post).isPresent()){
-            throw new RuntimeException("failed to add heart to post");
+            return "fail to add heart to post";
         }
 
         Heart heart = new Heart();
@@ -171,31 +171,50 @@ public class PostService {
 
         heartRepository.save(heart);
         postRepository.increaseHeart(postId);
+        return "AddHeart success";
     }
 
     @Transactional
-    public void deleteHeart(Long userId, Long postId){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
+    public String deleteHeart(Long userId, Long postId) {
+        try {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
 
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
+            Post post = postRepository.findById(postId)
+                    .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
 
-        Heart heart = heartRepository.findByUserAndPost(user, post)
-                .orElseThrow(() -> new NotFoundException("Could not find heart with id: " + postId));
+            Heart heart = heartRepository.findByUserAndPost(user, post)
+                    .orElseThrow(() -> new NotFoundException("Could not find heart with id: " + postId));
 
-        user.getHearts().remove(heart);
-        postRepository.decreaseHeart(postId);
-        heartRepository.delete(heart);
+            user.getHearts().remove(heart);
+            postRepository.decreaseHeart(postId);
+            heartRepository.delete(heart);
 
+            return "DeleteHeart success";
+
+        } catch (NotFoundException e) {
+            return "fail to delete heart to post";
+        }
     }
+
 
     @Transactional
     public List<PostListDTO> postList(){
         List<PostListDTO> posts = postRepository.findAllPostListDTO();
-
         return posts;
-
     }
+
+//    public String checkHeart(Long userId, Long postId){
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
+//
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
+//
+//        if(heartRepository.findByUserAndPost(user, post).isPresent()){
+//            return "fail";
+//        }
+//        return "Success";
+//    }
 
 }
