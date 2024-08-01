@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class RecordDetailDTO {
 
     @Schema(description = "견주 소모 칼로리")
     private int calorie;
+
+    @Schema(description = "산책 끝난 시간")
+    private LocalDateTime endTime;
 
     @Schema(description = "산책 경로 배열")
     private List<LocationDTO> locations;
