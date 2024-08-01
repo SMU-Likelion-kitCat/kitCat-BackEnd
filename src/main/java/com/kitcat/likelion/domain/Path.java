@@ -17,8 +17,10 @@ public class Path {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(precision = 15, scale = 10)
     private BigDecimal latitude;
 
+    @Column(precision = 15, scale = 10)
     private BigDecimal longitude;
 
     @ManyToOne(fetch = LAZY)
