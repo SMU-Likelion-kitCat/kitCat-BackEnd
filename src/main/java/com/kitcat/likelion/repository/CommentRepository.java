@@ -17,8 +17,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long>{
             "order by c.createTime desc ")
     List<Comment> findCommentHistory(@Param("userId") Long userId);
 
-    default List<PostCommentResponseDTO> findByPostId(Long postId, Long userId) {
-        return null;
-    }
+    @Query("SELECT new com.kitcat.likelion.responseDTO.PostCommentResponseDTO(c.id, u.nickname, c.content, c.isDeleted, c.createTime) " +
+            "FROM Comment c JOIN c.user u " +
+            "WHERE c.post.id = :postId AND c.isDeleted = false")
+    List<PostCommentResponseDTO> findByPostId(@Param("postId") Long postId);
 
 }
