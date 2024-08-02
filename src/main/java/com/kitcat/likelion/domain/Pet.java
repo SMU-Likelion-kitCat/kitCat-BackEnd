@@ -45,4 +45,12 @@ public class Pet {
         this.weight = weight;
         this.growthStatus = growthStatus;
     }
+
+    public void modifyName(String name) {
+        this.name = name;
+    }
+
+    public void modifyWeight(double weight) {
+        this.weight = weight;
+    }
 }
