@@ -1,10 +1,12 @@
 package com.kitcat.likelion.controller;
 
+import com.kitcat.likelion.requestDTO.ModifyPetDTO;
 import com.kitcat.likelion.requestDTO.PetListDTO;
 import com.kitcat.likelion.requestDTO.PetsDTO;
 import com.kitcat.likelion.responseDTO.PetInfoDTO;
 import com.kitcat.likelion.security.custom.CustomUserDetails;
 import com.kitcat.likelion.service.PetService;
+import com.kitcat.likelion.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -29,6 +31,7 @@ import java.util.List;
 public class PetController {
 
     private final PetService petService;
+    private final UserService userService;
 
     @PostMapping("/save")
     @Operation(summary = "반려견 저장", description = "반려견 정보 저장하는 API")
@@ -49,4 +52,17 @@ public class PetController {
 
         return petService.getPets(userDetails.getUserId());
     }
+
+    @PostMapping("/modify/pet")
+    public String modifyPetinfo(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                @RequestPart(value = "dto") List<ModifyPetDTO> modifyPetDTOs){
+        Long userId = userDetails.getUserId();
+        petService.modifyPetInfo(userId, modifyPetDTOs);
+
+        return "good";
+
+    }
+
+
+
 }

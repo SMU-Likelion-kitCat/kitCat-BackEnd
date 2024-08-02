@@ -8,6 +8,7 @@ import com.kitcat.likelion.domain.User;
 import com.kitcat.likelion.domain.enumration.GrowthStatus;
 import com.kitcat.likelion.repository.PetRepository;
 import com.kitcat.likelion.repository.UserRepository;
+import com.kitcat.likelion.requestDTO.ModifyPetDTO;
 import com.kitcat.likelion.requestDTO.PetListDTO;
 import com.kitcat.likelion.requestDTO.PetsDTO;
 import com.kitcat.likelion.responseDTO.PetInfoDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,4 +64,28 @@ public class PetService {
 
         return pets.stream().map(pet -> new PetInfoDTO(pet.getId(), pet.getName(), pet.getImage(), pet.getWeight())).toList();
     }
+
+    @Transactional
+    public void modifyPetInfo(Long userId, List<ModifyPetDTO> modifyPetDTOs) {
+        for (ModifyPetDTO dto : modifyPetDTOs) {
+            if (dto.getPetid() == null) {
+                throw new IllegalArgumentException("petId는 null이 될 수 없습니다.");
+            }
+
+            Optional<Pet> optionalPet = petRepository.findById(dto.getPetid());
+            if (optionalPet.isPresent()) {
+                Pet pet = optionalPet.get();
+                if (!pet.getUser().getId().equals(userId)) {
+                    throw new RuntimeException("Unauthorized access to pet: " + dto.getPetid());
+                }
+                pet.modifyName(dto.getName());
+                pet.modifyWeight(dto.getWeight());
+                petRepository.save(pet);
+            } else {
+                throw new RuntimeException("Pet not found with id: " + dto.getPetid());
+            }
+        }
+    }
+
+
 }
