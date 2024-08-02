@@ -139,7 +139,7 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("Could not find post with id: " + postId));
 
-        List<PostCommentResponseDTO> comments = commentRepository.findByPostId(postId, userId);
+        List<PostCommentResponseDTO> comments = commentRepository.findByPostId(postId);
         List<String> photoNames = photoRepository.findPhotoNameByPostId(postId);
 
         Optional<Heart> heart = heartRepository.findByUserIdAndPostId(userId, postId);

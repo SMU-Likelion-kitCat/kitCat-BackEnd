@@ -17,18 +17,13 @@ public class PostCommentResponseDTO {
 
     private boolean isDeleted;
 
-    private boolean commentWriterState;
-
     private LocalDateTime commentTime;
 
-    private List<PostCommentResponseDTO> children = new ArrayList<>();
-
-    public PostCommentResponseDTO(Long commentId, String writer, String content, boolean isDeleted, boolean commentWriterState, LocalDateTime commentTime) {
+    public PostCommentResponseDTO(Long commentId, String writer, String content, boolean isDeleted, LocalDateTime commentTime) {
         this.commentId = commentId;
         this.writer = writer;
         this.content = content;
         this.isDeleted = isDeleted;
-        this.commentWriterState = commentWriterState;
         this.commentTime = commentTime;
     }
 
