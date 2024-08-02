@@ -91,8 +91,8 @@ public class DataInit {
         Comment comment1 = new Comment("아니면 티코 1", false);
         Comment comment2 = new Comment("아니면 티코 2", false);
 
-        Comment children1 = new Comment("티코 좋다 1", false);
-        Comment children2 = new Comment("티코 좋다 2", false);
+        Comment comment3 = new Comment("아니면 티코 3", false);
+        Comment comment4 = new Comment("아니면 티코 4", false);
 
         comment1.setPost(post1);
         comment2.setPost(post2);
@@ -100,8 +100,11 @@ public class DataInit {
         comment1.setUser(user1);
         comment2.setUser(user1);
 
-        children1.setParent(comment1);
-        children2.setParent(comment2);
+        comment3.setUser(user1);
+        comment4.setUser(user1);
+
+        comment3.setPost(post1);
+        comment4.setPost(post2);
 
         userRepository.save(user1);
         userRepository.save(user);

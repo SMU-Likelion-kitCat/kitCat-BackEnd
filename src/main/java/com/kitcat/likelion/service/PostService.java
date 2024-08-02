@@ -118,16 +118,6 @@ public class PostService {
         comment.setUser(user);
         comment.setPost(post);
 
-        if (requestDTO.getParentId() != null){
-            if(commentRepository.findById(requestDTO.getParentId()).isPresent()){
-                Comment parentComment = commentRepository.findById(requestDTO.getParentId())
-                        .orElseThrow(() -> new NotFoundException("Could not find parent comment with id: " + requestDTO.getParentId()));
-                comment.setParent(parentComment);
-            }else{
-                return "not found parentComment";
-            }
-        }
-
         commentRepository.save(comment);
 
         post.increaseCommentCount();
@@ -208,18 +198,5 @@ public class PostService {
         List<PostListDTO> posts = postRepository.findAllPostListDTO();
         return posts;
     }
-
-//    public String checkHeart(Long userId, Long postId){
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
-//
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(() -> new NotFoundException("Could not found post with id: " + postId));
-//
-//        if(heartRepository.findByUserAndPost(user, post).isPresent()){
-//            return "fail";
-//        }
-//        return "Success";
-//    }
 
 }
