@@ -46,7 +46,7 @@ public class PetService {
             Pet pet = new Pet(petsDTO.getName(), image, petsDTO.getWeight(), GrowthStatus.valueOf(petsDTO.getGrowthStatus()));
             pet.setUser(user);
 
-            MultipartFile file = files.get(index);
+            MultipartFile file = files.get(index++);
             ObjectMetadata metadata = new ObjectMetadata();
 
             metadata.setContentLength(file.getSize());
