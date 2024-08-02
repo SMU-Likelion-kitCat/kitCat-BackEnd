@@ -107,7 +107,7 @@ public class PostService {
     }
 
     @Transactional
-    public void createComment(Long userId, PostCommentRequestDTO requestDTO){
+    public String createComment(Long userId, PostCommentRequestDTO requestDTO){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user with id: " + userId));
 
@@ -119,15 +119,20 @@ public class PostService {
         comment.setPost(post);
 
         if (requestDTO.getParentId() != null){
-            Comment parentComment = commentRepository.findById(requestDTO.getParentId())
-                    .orElseThrow(() -> new NotFoundException("Could not find parent comment with id: " + requestDTO.getParentId()));
-            comment.setParent(parentComment);
+            if(commentRepository.findById(requestDTO.getParentId()).isPresent()){
+                Comment parentComment = commentRepository.findById(requestDTO.getParentId())
+                        .orElseThrow(() -> new NotFoundException("Could not find parent comment with id: " + requestDTO.getParentId()));
+                comment.setParent(parentComment);
+            }else{
+                return "not found parentComment";
+            }
         }
 
         commentRepository.save(comment);
 
         post.increaseCommentCount();
         postRepository.save(post);
+        return "good";
     }
     @Transactional
     public PostDetailDTO findDetailPost(Long userId, Long postId){

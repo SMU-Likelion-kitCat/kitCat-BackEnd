@@ -5,6 +5,7 @@ import com.kitcat.likelion.domain.User;
 import com.kitcat.likelion.domain.enumration.RoleType;
 import com.kitcat.likelion.repository.UserRepository;
 import com.kitcat.likelion.requestDTO.LoginDTO;
+import com.kitcat.likelion.requestDTO.ModifyUserDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
 import com.kitcat.likelion.responseDTO.UserInfoDTO;
 import com.kitcat.likelion.security.custom.CustomUserInfoDto;
@@ -69,5 +70,18 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Could not found id : " + userId));
 
         return new UserInfoDTO(user.getNickname(), user.getHeight(), user.getWeight(), user.getBmi());
+    }
+
+    @Transactional
+    public String modifyUserInfo(Long userId, ModifyUserDTO modifyUserDTO) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found id : " + userId));
+
+        user.modifyNickname(modifyUserDTO.getNickname());
+        user.modifyHeight(modifyUserDTO.getHeight());
+        user.modifyWeight(modifyUserDTO.getWeight());
+        user.modifyBmi(modifyUserDTO.getBmi());
+
+        return "good";
     }
 }

@@ -1,12 +1,9 @@
 package com.kitcat.likelion.domain;
 
-import com.kitcat.likelion.domain.enumration.GrowthStatus;
 import com.kitcat.likelion.domain.enumration.RoleType;
-import com.kitcat.likelion.domain.enumration.RoutineTerm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +78,22 @@ public class User {
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
+    }
+
+    public void modifyNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void modifyHeight(double height) {
+        this.height = height;
+    }
+
+    public void modifyWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void modifyBmi(double bmi) {
+        this.bmi = bmi;
     }
 
 
