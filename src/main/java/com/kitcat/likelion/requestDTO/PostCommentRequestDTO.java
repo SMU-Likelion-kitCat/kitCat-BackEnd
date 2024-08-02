@@ -12,9 +12,6 @@ public class PostCommentRequestDTO {
     @Schema(description = "댓글이 달리는 게시글의 ID")
     private Long postId;
 
-    @Schema(description = "대댓글일때 댓글의 ID값 대댓글이 아닐 때는 null입니다.")
-    private Long parentId;
-
     @Schema(description = "댓글의 내용")
     private String content;
 

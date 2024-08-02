@@ -33,20 +33,9 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parent;
-
-    @OneToMany(mappedBy = "parent", cascade = PERSIST)
-    private List<Comment> children = new ArrayList<>();
-
     public Comment(String content, boolean isDeleted) {
         this.content = content;
         this.isDeleted = isDeleted;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public void setUser(User user) {
@@ -63,18 +52,6 @@ public class Comment extends BaseTimeEntity {
         if(!post.getComments().contains(this)) {
             post.addComment(this);
         }
-    }
-
-    public void setParent(Comment comment) {
-        this.parent = comment;
-
-        if(!comment.children.contains(this)) {
-            comment.children.add(this);
-        }
-    }
-
-    public void addComment(Comment comment) {
-        this.children.add(comment);
     }
 
 }
