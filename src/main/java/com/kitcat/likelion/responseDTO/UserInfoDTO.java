@@ -2,9 +2,11 @@ package com.kitcat.likelion.responseDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 @AllArgsConstructor
 public class UserInfoDTO {
 
@@ -19,4 +21,5 @@ public class UserInfoDTO {
 
     @Schema(description = "BMI", example = "18.2")
     private double bmi;
+
 }

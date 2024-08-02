@@ -44,18 +44,30 @@ public class PostController {
         return "good";
     }
     @Operation(summary = "댓글 작성 기능", description = "댓글 작성 사용되는 API")
-    @ApiResponse(responseCode = "201", description = "댓글 작성 성공")
-    @PostMapping("/comment")
-    public String comment(@RequestBody PostCommentRequestDTO requestDTO,
-                          @AuthenticationPrincipal CustomUserDetails userDetails){
+    @ApiResponses(value = {
+            @ApiResponse (responseCode = "200", description = "댓글 작성 성공"),
+            @ApiResponse (responseCode = "400", description = "댓글이 없는 곳에 대댓글을 달려고 할 때 에러")
+    })
+    @Parameters({
+            @Parameter(name = "postId", description = "댓글이 달리는 게시글의 ID"),
+            @Parameter(name = "parentId", description = "대댓글일 경우 대댓글이 달리는 댓글의 ID(없으면 null로 작성)"),
+            @Parameter(name = "content", description = "댓글 내용"),
 
-        postService.createComment(userDetails.getUserId(), requestDTO);
-//        postService.createComment(1L, requestDTO);
-        return "good";
+    })
+    @PostMapping("/comment")
+    public ResponseEntity<String> comment(@RequestBody PostCommentRequestDTO requestDTO,
+                                @AuthenticationPrincipal CustomUserDetails userDetails){
+        String commentStatus = postService.createComment(userDetails.getUserId(), requestDTO);
+        if(commentStatus.equals("not found parentComment")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(commentStatus);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(commentStatus);
     }
 
     @Operation(summary = "게시글을 자세히 보는 기능", description = "게시글을 들어갈 때 작성 사용되는 API")
-    @ApiResponse(responseCode = "200", description = "게시글 보기")
+    @ApiResponses(value = {
+            @ApiResponse (responseCode = "200", description = "게시글 보기")
+    })
     @Parameters({
             @Parameter(name = "postId", description = "상세 조회 게시글 ID", example = "1")
     })
@@ -110,6 +122,7 @@ public class PostController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "전체 목록 조회 성공"),
     })
+
     @GetMapping("/show/all")
     public List<PostListDTO> showAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
 

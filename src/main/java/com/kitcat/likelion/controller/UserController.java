@@ -1,6 +1,7 @@
 package com.kitcat.likelion.controller;
 
 import com.kitcat.likelion.requestDTO.LoginDTO;
+import com.kitcat.likelion.requestDTO.ModifyUserDTO;
 import com.kitcat.likelion.requestDTO.PetsDTO;
 import com.kitcat.likelion.requestDTO.RegisterDTO;
 import com.kitcat.likelion.responseDTO.UserInfoDTO;
@@ -120,4 +121,14 @@ public class UserController {
     public String test() {
         return "success";
     }
+
+
+    @PostMapping("/modify/user")
+    public String modifyUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails,
+                             @RequestPart(value = "dto") ModifyUserDTO modifyUserDTO) {
+        Long userId = userDetails.getUserId();
+        userService.modifyUserInfo(userId, modifyUserDTO);
+        return "good";
+    }
+
 }
