@@ -8,6 +8,8 @@ import org.hibernate.annotations.ColumnDefault;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -35,7 +37,7 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "parent_comment_id")
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = PERSIST)
     private List<Comment> children = new ArrayList<>();
 
     public Comment(String content, boolean isDeleted) {

@@ -88,6 +88,21 @@ public class DataInit {
         Post post1 = new Post("test1", "test_content1", 0, 1, user1);
         Post post2 = new Post("test2", "test_content2", 0, 1, user1);
 
+        Comment comment1 = new Comment("아니면 티코 1", false);
+        Comment comment2 = new Comment("아니면 티코 2", false);
+
+        Comment children1 = new Comment("티코 좋다 1", false);
+        Comment children2 = new Comment("티코 좋다 2", false);
+
+        comment1.setPost(post1);
+        comment2.setPost(post2);
+
+        comment1.setUser(user1);
+        comment2.setUser(user1);
+
+        children1.setParent(comment1);
+        children2.setParent(comment2);
+
         userRepository.save(user1);
         userRepository.save(user);
         postRepository.save(post1);
