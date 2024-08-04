@@ -24,9 +24,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 
     @Modifying(clearAutomatically = true)
-    @Query("select new com.kitcat.likelion.responseDTO.PostListDTO(p.id,p.content, u.nickname, p.commentCount, p.like_count, p.createTime) " +
-            "from Post p left join p.user u")
+    @Query("SELECT new com.kitcat.likelion.responseDTO.PostListDTO(" +
+            "p.id, p.content, u.nickname, p.commentCount, p.like_count, p.createTime, " +
+            "CASE WHEN h.id IS NOT NULL THEN TRUE ELSE FALSE END) " +
+            "FROM Post p " +
+            "LEFT JOIN p.user u " +
+            "LEFT JOIN p.hearts h " +
+            "GROUP BY p.id, u.nickname, p.commentCount, p.like_count, p.createTime")
     List<PostListDTO> findAllPostListDTO();
+
 
 
 }

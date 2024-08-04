@@ -126,7 +126,7 @@ public class PostController {
     @GetMapping("/show/all")
     public List<PostListDTO> showAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        return postService.postList();
+        return postService.postList(userDetails.getUserId());
     }
 
 
