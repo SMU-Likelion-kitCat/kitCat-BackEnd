@@ -22,4 +22,7 @@ public interface HeartRepository extends JpaRepository<Heart, Long> {
             "where h.user.id = :id ")
     void deleteByUserId(@Param("id") Long id);
 
+    @Query("SELECT COUNT(h) > 0 FROM Heart h WHERE h.post.id = :postId AND h.user.id = :userId")
+    boolean existsByPostIdAndUserId(@Param("postId") Long postId, @Param("userId") Long userId);
+
 }

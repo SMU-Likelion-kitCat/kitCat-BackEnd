@@ -26,6 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -195,9 +196,21 @@ public class PostService {
 
 
     @Transactional
-    public List<PostListDTO> postList(){
-        List<PostListDTO> posts = postRepository.findAllPostListDTO();
-        return posts;
+    public List<PostListDTO> postList(Long userId) {
+        List<Post> posts = postRepository.findAll();
+
+        return posts.stream().map(post -> {
+            boolean hasLiked = heartRepository.existsByPostIdAndUserId(post.getId(), userId);
+            return new PostListDTO(
+                    post.getId(),
+                    post.getContent(),
+                    post.getUser().getNickname(),
+                    post.getCommentCount(),
+                    post.getLike_count(),
+                    post.getCreateTime(),
+                    hasLiked
+            );
+        }).collect(Collectors.toList());
     }
 
 }
