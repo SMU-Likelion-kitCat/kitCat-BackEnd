@@ -158,6 +158,10 @@ public class RoutineService {
         for (UserRecord record : records) {
             Routine routine = record.getRoutine();
 
+            if(routine == null) {
+                continue;
+            }
+
             double progress = ((double) routine.getUserRecords().size() / (double) ((routine.getRoutineTerm().getRoutineTerm().charAt(0) - '0') * routine.getCount())) * 100;
 
             RoutineDTO dto = RoutineDTO.builder()
