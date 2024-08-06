@@ -13,4 +13,6 @@ public class ModifyPetDTO {
 
     private double weight;
 
+    private boolean imageStatus;
+
 }

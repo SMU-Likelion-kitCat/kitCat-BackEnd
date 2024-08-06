@@ -66,26 +66,62 @@ public class PetService {
     }
 
     @Transactional
-    public void modifyPetInfo(Long userId, List<ModifyPetDTO> modifyPetDTOs) {
+    public String modifyPetInfo(Long userId, List<ModifyPetDTO> modifyPetDTOs, List<MultipartFile> files) {
+        int index = 0;
+
         for (ModifyPetDTO dto : modifyPetDTOs) {
             if (dto.getPetid() == null) {
                 throw new IllegalArgumentException("petId는 null이 될 수 없습니다.");
             }
 
             Optional<Pet> optionalPet = petRepository.findById(dto.getPetid());
+            Pet pet = null;
             if (optionalPet.isPresent()) {
-                Pet pet = optionalPet.get();
+                 pet = optionalPet.get();
                 if (!pet.getUser().getId().equals(userId)) {
                     throw new RuntimeException("Unauthorized access to pet: " + dto.getPetid());
                 }
                 pet.modifyName(dto.getName());
                 pet.modifyWeight(dto.getWeight());
                 petRepository.save(pet);
+            } else if (dto.isImageStatus()) {
+                User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new NotFoundException("Could not find user with id: " + userId));
+
+                pet = optionalPet.get();
+                String oldImage = "kitcat/" + pet.getImage();
+
+                try {
+                    amazonS3.deleteObject(bucket, oldImage);
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to delete old image for pet: " + dto.getPetid(), e);
+                }
+
+                if (files != null && index < files.size()) {
+                    pet = optionalPet.get();
+                    String newImage = "kitcat/" + pet.getImage();
+                    MultipartFile file = files.get(index++);
+                    ObjectMetadata metadata = new ObjectMetadata();
+                    metadata.setContentLength(file.getSize());
+                    metadata.setContentType(file.getContentType());
+
+                    try {
+                        amazonS3.putObject(bucket, newImage, file.getInputStream(), metadata);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to upload new image for pet: " + dto.getPetid(), e);
+                    }
+
+                } else {
+                    throw new IllegalArgumentException("Image file is missing for pet with id: " + dto.getPetid());
+                }
             } else {
                 throw new RuntimeException("Pet not found with id: " + dto.getPetid());
             }
         }
+
+        return "good";
     }
+
 
 
 }
