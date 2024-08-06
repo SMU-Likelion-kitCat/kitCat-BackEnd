@@ -55,9 +55,11 @@ public class PetController {
 
     @PostMapping("/modify/pet")
     public String modifyPetinfo(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                @RequestPart(value = "dto") List<ModifyPetDTO> modifyPetDTOs){
+                                @RequestPart(value = "dto") List<ModifyPetDTO> modifyPetDTOs,
+                                @RequestPart(value = "files", required = false) List<MultipartFile> files){
+
         Long userId = userDetails.getUserId();
-        petService.modifyPetInfo(userId, modifyPetDTOs);
+        petService.modifyPetInfo(userId, modifyPetDTOs, files);
 
         return "good";
 
